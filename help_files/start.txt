@@ -1,0 +1,39 @@
+Prompt & Commandes:
+
+Votre shell doit afficher un prompt en attendant une nouvelle commande.
+Citations:
+
+Gérer les guillemets simples (') : tout ce qui se trouve à l'intérieur est pris littéralement (pas d'interprétation des méta-caractères).
+Gérer les guillemets doubles (") : semblable aux guillemets simples, mais $ peut être interprété pour les variables d'environnement.
+
+Redirections:
+< : redirection de l'entrée.
+> : redirection de la sortie.
+<< : lire l'entrée jusqu'à ce qu'une ligne contenant le délimiteur donné soit rencontrée.
+>> : redirige la sortie en mode append.
+
+Pipes:
+Le caractère | : la sortie d'une commande est connectée à l'entrée de la commande suivante.
+
+Variables d'environnement:
+$ suivi d'une séquence de caractères doit être étendu à sa valeur. Par exemple, $PATH ou $HOME.
+$? doit être étendu au statut de sortie du pipeline exécuté en avant-plan le plus récent.
+
+Contrôles:
+ctrl-C, ctrl-D et ctrl-\ doivent être gérés comme indiqué dans le sujet.
+
+Builtins:
+Votre shell doit reconnaître et exécuter plusieurs commandes builtins, comme echo, cd, pwd,
+export, unset, env et exit.
+
+Restrictions:
+Les séquences non fermées, comme les citations ouvertes sans fermeture, ne doivent pas être interprétées.
+Évitez d'utiliser plus d'une variable globale pour indiquer un signal reçu.
+
+Fonctions Externes:
+La liste des fonctions externes que vous êtes autorisé à utiliser. Ces fonctions peuvent faciliter le traitement de certaines parties du shell, notamment le parsing.
+
+Enfin, avant de vous lancer dans le parsing, il est essentiel de :
+Découper le problème : Comme mentionné précédemment, commencez par des commandes simples sans redirections ou pipes. Une fois que vous avez un parser de base, ajoutez progressivement d'autres fonctionnalités.
+
+Planifier à l'avance : Prenez un moment pour planifier comment vous allez structurer votre code, en particulier comment vous allez représenter une commande et ses divers éléments (arguments, redirections, pipes, etc.) en mémoire.
