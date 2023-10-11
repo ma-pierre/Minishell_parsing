@@ -1,13 +1,15 @@
 #include "minishell_parse.h"
 
-char *check_quotes(char *str)
+char *check_quotes(char *line)
 {
 	int	i;
 	int	j;
 	char c;
+	char *str;
 
 	i = 0;
 	j = 0;
+	str = ft_strdup(line);
 	while (str[i])
 	{
 		if(str[i] == '"' || str[i] == '\'')
@@ -32,8 +34,5 @@ char *check_quotes(char *str)
 	}
 	if (j == 1)
 		return (NULL);
-	return (str);
+	return (line);
 }
-//cette fonction passe tout les caractere en negatif afin de ne garder que les coats,
-// si les coats sont mal fermes, elle return NULL, sinon elle return la string avec les *-1
-//seuls les coats seront visible
