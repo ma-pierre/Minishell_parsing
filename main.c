@@ -6,30 +6,38 @@ void handle_sigint(int sig)
     write(1, "\nMinishell> ", 12);
 }
 
-void handle_eof()
+void ft_exit()
 {
-    write(1, "\nExiting Minishell...\n", 23);
+    write(1, "\nExit\n", 6);
     exit(0);
 }
 
-int main()
+int main(int ac, char **av, char **env)
 {
+	(void)ac;
+	(void)av;
+
     struct sigaction sa;
 
     sa.sa_handler = handle_sigint;
-    sa.sa_flags = SA_RESTART | SA_RESETHAND;
+    sa.sa_flags = SA_RESTART;
     sigaction(SIGINT, &sa, NULL);
+
+	printf("%s\n", env[0]);
+	printf("%s\n", env[1]);
+	printf("%s\n", env[2]);
+	printf("%s\n", env[3]);
 
     char *line;
     while (1) 
-    {
+	{
         //printf(MAGENTA "Minishell> " RESET);
         line = readline("Minishell> ");
-        if (!line)
-        {
-            handle_eof();
-            continue;
-        }
+		if (!line)
+		{
+			ft_exit();
+			continue;
+		}
 		if (line && *line)
     		add_history(line);
 		if (line)
@@ -38,12 +46,12 @@ int main()
 			{
 				printf("quote error\n");
 				free(line);
-				continue;
+				continue ;
 			}
 			if (!syntax_parse(line))
 			{
 				free(line);
-				continue;
+				continue ;
 			}
 			printf("R.A.S SUR L'ENTREE SUIVANTE :  %s\n", line);
 		}

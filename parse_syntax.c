@@ -11,7 +11,7 @@ int	operator_parse(char *str, char op)
 		tmp++;
 	if (!*tmp)
 		return (syntax_error(0));
-	if (op == '|' && is_operator(*tmp))
+	if (op == '|' && *tmp == '|')
 		return (syntax_error(op));
 	if (is_redirection(op) && is_operator(*tmp) && tmp - str)
 		return (syntax_error(op));

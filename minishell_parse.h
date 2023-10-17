@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
+#include <string.h>
 
 #define MAGENTA "\033[95m"
 #define RESET   "\033[0m"

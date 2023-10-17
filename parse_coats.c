@@ -12,27 +12,26 @@ char *check_quotes(char *line)
 	str = ft_strdup(line);
 	while (str[i])
 	{
-		if(str[i] == '"' || str[i] == '\'')
+		if (str[i] == '"' || str[i] == '\'')
 		{
 			j = 1;
 			c = str[i];
 			i++;
-			while(str[i])
+			while (str[i])
 			{
-				if(str[i] == c)
+				if (str[i] == c)
 				{
 					j = 0;
-					break;
+					break ;
 				}
-				else
-					str[i++] *= -1;
+				else if (str[i] == '$' && c == '\'')
+                    str[i] *= -1;
+                i++;
 			}
 		}
-		else
-			str[i] *= -1;
-		i++;
+        i++;
 	}
 	if (j == 1)
 		return (NULL);
-	return (line);
+	return (str);
 }

@@ -1,0 +1,2 @@
+17/10/2023
+Quand je fais plus de deux ctrlC a la suite, minishell quitte.
