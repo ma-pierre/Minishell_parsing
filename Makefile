@@ -4,6 +4,7 @@ SRCS = main.c \
 		parse_syntax.c\
 		parse_is_utils.c\
 		parse_utils.c\
+		expend.c\
 		
 OBJS = $(SRCS:.c=.o)
 CFLAGS = -Wall -Wextra -Werror

@@ -28,3 +28,49 @@ char	*ft_strdup(const char *s)
 	dup[i] = '\0';
 	return (dup);
 }
+
+char *ft_strndup(const char *s, size_t n)
+{
+    size_t i;
+    char *dup;
+
+    i = 0;
+    while (s[i] && i < n)
+    {
+        i++;
+    }
+
+    dup = (char *)malloc((i + 1) * sizeof(char));
+    if (!dup)
+        return (NULL);
+
+    i = 0;
+    while (s[i] && i < n)
+    {
+        dup[i] = s[i];
+        i++;
+    }
+    
+    dup[i] = '\0';
+    return (dup);
+}
+
+unsigned int	ft_strlcat(char *dest, char *src, unsigned int size)
+{
+	unsigned int	i;
+	unsigned int	j;
+	unsigned int	k;
+
+	i = ft_strlen(dest);
+	j = ft_strlen(src);
+	k = 0;
+	if (size <= i || size == 0)
+		return (j + size);
+	while (i + k < size - 1 && src[k] != '\0')
+	{
+		dest[i + k] = src[k];
+		k++;
+	}
+	dest[i + k] = '\0';
+	return (i + j);
+}

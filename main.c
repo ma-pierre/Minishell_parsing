@@ -12,7 +12,7 @@ void ft_exit()
     exit(0);
 }
 
-int main(int ac, char **av, char **env)
+int main(int ac, char **av)
 {
 	(void)ac;
 	(void)av;
@@ -23,10 +23,10 @@ int main(int ac, char **av, char **env)
     sa.sa_flags = SA_RESTART;
     sigaction(SIGINT, &sa, NULL);
 
-	printf("%s\n", env[0]);
-	printf("%s\n", env[1]);
-	printf("%s\n", env[2]);
-	printf("%s\n", env[3]);
+	// printf("%s\n", env[0]);
+	// printf("%s\n", env[1]);
+	// printf("%s\n", env[2]);
+	// printf("%s\n", env[3]);
 
     char *line;
     while (1) 
@@ -53,7 +53,7 @@ int main(int ac, char **av, char **env)
 				free(line);
 				continue ;
 			}
-			printf("R.A.S SUR L'ENTREE SUIVANTE :  %s\n", line);
+			split_env(line);
 		}
        	free(line);
 	}

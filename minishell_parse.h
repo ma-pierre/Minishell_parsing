@@ -8,6 +8,7 @@
 
 #define MAGENTA "\033[95m"
 #define RESET   "\033[0m"
+#define DQM 1
 
 char	*check_quotes(char *str);
 int		syntax_parse(char *str);
@@ -20,3 +21,8 @@ int		is_space(char c);
 int		operator_parse(char *str, char op);
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s);
+char *ft_strndup(const char *s, size_t n);
+char *split_env(char *str);
+char	*find_var_name(char *str, int i);
+size_t	find_pos_dollar(char *str);
+unsigned int	ft_strlcat(char *dest, char *src, unsigned int size);
