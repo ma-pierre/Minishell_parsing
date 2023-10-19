@@ -32,6 +32,7 @@ char	*find_var_name(char *str, int i)
 		return (var);
 		//dqm est un int defini dans le .h , a remplacer par lexit status recu par lexec
 	}
+	//rajouter que si le premier caractere apres $ est un digit alors cest faux;checker bash(tant que cest des numeros alors ca ne compte pas)
 	while(is_alpha(str[i]) || is_digit(str[i]) || str[i] == '_')
 		i++;
 	var = malloc(sizeof(char) * (i - count) + 1);

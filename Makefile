@@ -1,10 +1,10 @@
 NAME = minishell
 SRCS = main.c \
-		parse_coats.c \
+		parse_quotes.c \
 		parse_syntax.c\
 		parse_is_utils.c\
 		parse_utils.c\
-		expend.c\
+		expand.c\
 		
 OBJS = $(SRCS:.c=.o)
 CFLAGS = -Wall -Wextra -Werror
