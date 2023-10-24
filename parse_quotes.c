@@ -24,7 +24,7 @@ char *check_quotes(char *line)
 					j = 0;
 					break ;
 				}
-				else if (str[i] == '$' && c == '\'')
+				else if (c == '\'')
                     str[i] *= -1;
                 i++;
 			}

@@ -10,6 +10,27 @@
 #define RESET   "\033[0m"
 #define DQM 1
 
+typedef struct s_env
+{
+    char    *env_line;
+    struct s_env   *next;
+} t_env;
+
+typedef struct s_data
+{
+	int pipe;
+	int ncmd;
+}t_data;
+
+typedef struct s_cmds
+{
+	char 	*cmd;
+	int		infile;
+	int		outfile;
+	t_env	env;
+	t_data	data;
+}t_cmds;
+
 char	*check_quotes(char *str);
 int		syntax_parse(char *str);
 int		syntax_error(char c);
