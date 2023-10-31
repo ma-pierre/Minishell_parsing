@@ -29,6 +29,9 @@ int main(int ac, char **av)
 	// printf("%s\n", env[3]);
 
     char *line;
+	char *hdoc;
+
+	hdoc = NULL;
     while (1) 
 	{
         //printf(MAGENTA "Minishell> " RESET);
@@ -53,7 +56,11 @@ int main(int ac, char **av)
 				free(line);
 				continue ;
 			}
-			split_env(line);
+			line = split_env(line);
+			if(find_heredoc(line))
+			{
+				hdoc = find_multi_heredoc(line);
+			}
 		}
        	free(line);
 	}

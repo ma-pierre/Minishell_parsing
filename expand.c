@@ -37,7 +37,7 @@ char	*find_var_name(char *str, int i)
 		i++;
 	var = malloc(sizeof(char) * (i - count) + 1);
 	if (!var)
-		return(NULL);
+		return(NULL);                 
 	while (count < i)
 		var[j++] = str[count++];
 	var[j] = '\0';
@@ -50,7 +50,7 @@ char *build_expended_line(char *before, char *value, char *after)
 	char *expanded;
 
 	if (value == NULL)
-	value = "";
+		value = "";
 	i = (ft_strlen(before) + ft_strlen(value) + ft_strlen(after));
 	expanded = malloc(sizeof(char) * (i + 1));
 	if (!expanded)
