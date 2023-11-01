@@ -47,3 +47,8 @@ char *split_env(char *str);
 char	*find_var_name(char *str, int i);
 size_t	find_pos_dollar(char *str);
 unsigned int	ft_strlcat(char *dest, char *src, unsigned int size);
+int	find_nbcmd(char *str);
+int find_next_pipe(char *str);
+char **line_to_tab(char *line);
+t_cmds *tab_to_struct(char **cmds);
+char	*ft_positive(char *str);

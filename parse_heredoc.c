@@ -1,3 +1,5 @@
+#include "minishell_parse.h"
+
 char	*find_heredoc(char *line)
 {
 	if (!line || ft_strlen(line) <= 2)

@@ -33,7 +33,7 @@ char	*find_var_name(char *str, int i)
 		//dqm est un int defini dans le .h , a remplacer par lexit status recu par lexec
 	}
 	//rajouter que si le premier caractere apres $ est un digit alors cest faux;checker bash(tant que cest des numeros alors ca ne compte pas)
-	while(is_alpha(str[i]) || is_digit(str[i]) || str[i] == '_')
+	while(is_alpha(str[i]) || is_digit(str[i]) || is_space(str[i]))
 		i++;
 	var = malloc(sizeof(char) * (i - count) + 1);
 	if (!var)
@@ -81,8 +81,8 @@ char *split_env(char *str)
 		expanded = build_expended_line(before, to_expand, after);
 	else
 		expanded = build_expended_line(before, getenv(to_expand), after);
-	printf("%s|\n", expanded);
-	return (NULL);
+	//printf("%s|\n", expanded);
+	return (expanded);
 }
 	
 	

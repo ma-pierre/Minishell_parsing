@@ -1,13 +1,14 @@
 NAME = minishell
-SRCS = main.c \
+SRCS = parse_main.c \
 		parse_quotes.c \
 		parse_syntax.c\
 		parse_is_utils.c\
 		parse_utils.c\
-		expand.c\
+		parse_expand.c\
+		parse_to_send.c\
 		
 OBJS = $(SRCS:.c=.o)
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 LIBS = -lreadline
 
 all: $(NAME)
