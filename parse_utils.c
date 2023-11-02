@@ -89,3 +89,46 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	}
 	return (0);
 }
+
+
+static unsigned int	count_malloc(int n)
+{
+	unsigned int	c;
+
+	c = 0;
+	if (n <= 0)
+		c++;
+	while (n != 0)
+	{
+		n /= 10;
+		c++;
+	}
+	return (c);
+}
+
+char	*ft_itoa(int n)
+{
+	char			*str;
+	char			neg;
+	unsigned int	c;
+
+	neg = '\0';
+	if (n < 0)
+		neg = '-';
+	c = count_malloc(n);
+	str = malloc((c + 1) * sizeof(char));
+	if (!str)
+		return (0);
+	str[c] = '\0';
+	while (c)
+	{
+		if (n < 0)
+			str[--c] = -(n % 10) + '0';
+		else
+			str[--c] = (n % 10) + '0';
+		n /= 10;
+	}
+	if (neg)
+		str[c] = neg;
+	return (str);
+}

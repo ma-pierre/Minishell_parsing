@@ -1,6 +1,6 @@
 #include "minishell_parse.h"
 
-size_t	find_pos_dollar(char *str)
+int	find_pos_dollar(char *str)
 {
 	int	i;
 
@@ -64,24 +64,49 @@ char *build_expended_line(char *before, char *value, char *after)
 
 char *split_env(char *str)
 {
-	size_t dollar_pos;
+	int dollar_pos;
 	char *before;
-	char *to_expand;
 	char *after;
 	char *expanded;
+	char *var_name;
+	char *value;
 
 	dollar_pos = find_pos_dollar(str);
-	//if (dollar_pos == -1)
-	//	return(NULL);
+	if (dollar_pos == -1)
+		return (str);
 	before = ft_strndup(str, dollar_pos);
-	to_expand = find_var_name(str, dollar_pos+1);
-	after = ft_strndup(&str[dollar_pos + 1 + ft_strlen(to_expand)],
-			ft_strlen(str));
-	if (str[dollar_pos + 1] == '?')
-		expanded = build_expended_line(before, to_expand, after);
+	if (!before)
+		return (NULL);
+	var_name = find_var_name(str, dollar_pos + 1);
+    if (!var_name)
+	{
+        free(before);
+        return NULL;
+    }
+	if (strcmp(var_name, "?") == 0)
+        value = ft_itoa(DQM);
 	else
-		expanded = build_expended_line(before, getenv(to_expand), after);
-	//printf("%s|\n", expanded);
+        value = getenv(var_name);
+	after = ft_strdup(&str[dollar_pos + 1 + ft_strlen(var_name)]);
+	 if (!after) 
+	 {
+        free(before);
+        free(var_name);
+        if (value != getenv(var_name))
+            free(value);
+        return NULL;
+    }
+	expanded = build_expended_line(before, value, after);
+	free(before);
+    free(var_name);
+    free(after);
+    if (value != getenv(var_name)){
+        free(value);
+	}
+	if (expanded != str) {
+        free(str);
+	}
+	printf("EXPAND ====== %s|\n", expanded);
 	return (expanded);
 }
 	

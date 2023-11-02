@@ -16,6 +16,7 @@ int	main(int ac, char **av)
 {
 	struct sigaction	sa;
 	char				*line;
+	char				*tmp;
 	//char				*hdoc;
 	char				**cmds;
 	t_cmds				*data_exec;
@@ -36,40 +37,52 @@ int	main(int ac, char **av)
 	{
 		// printf(MAGENTA "Minishell> " RESET);
 		line = readline("Minishell> ");
-		if (!line)
+		tmp = ft_strdup(line);
+		if (!tmp)
 		{
 			ft_exit();
 			continue ;
 		}
-		if (line && *line)
-			add_history(line);
-		if (line)
+		if (tmp && *tmp)
+			add_history(tmp);
+		if (tmp)
 		{
-			line = check_quotes(line);
-			if (!line)
+			tmp = check_quotes(tmp);
+			if (!tmp)
 			{
 				printf("quote error\n");
 				continue ;
 			}
-			printf("AFTER QUOTES = %s \n", line);
-			if (!syntax_parse(line))
+			printf("AFTER QUOTES = %s \n", tmp);
+			if (!syntax_parse(tmp))
 			{
-				free(line);
+				free(tmp);
 				continue ;
 			}
-			while (find_pos_dollar(line) != (size_t)-1)
-				line = split_env(line);
+			while (-1 != find_pos_dollar(tmp))
+			{
+            char *new_tmp = split_env(tmp);
+            if (new_tmp == NULL) {
+                fprintf(stderr, "Failed to expand environment variables.\n");
+                free(tmp);
+                break; // Sortez de la boucle si l'expansion échoue.
+            }
+            if (tmp != new_tmp) { // Si une nouvelle chaîne a été allouée, libérez l'ancienne.
+                free(tmp);
+            }
+            tmp = new_tmp;
+        }
 			// if(find_heredoc(line))
 			//{
 			//	hdoc = find_multi_heredoc(line);
 			//}
-			line = ft_positive(line);
-			cmds = line_to_tab(line);
+			tmp = ft_positive(tmp);
+			cmds = line_to_tab(tmp);
 			//ENVOYER A LA PLACE DE LINE  LA LIGNE aVEc -1 au lieu des pipes;
 			data_exec = tab_to_struct(cmds);
 			if (!data_exec)
 			{
-				free(line);
+				free(tmp);
 				//GERER LERREUR
 				return (0);
 			}
@@ -80,6 +93,6 @@ int	main(int ac, char **av)
 				i++;
 			}
 		}
-		free(line);
+		free(tmp);
 	}
 }
