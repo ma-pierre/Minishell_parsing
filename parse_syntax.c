@@ -7,7 +7,7 @@ int	operator_parse(char *str, char op)
 	if (!str)
 		return (0);
 	tmp = str;
-	while (*tmp && *tmp == ' ')
+	while (*tmp && is_space(*tmp))
 		tmp++;
 	if (!*tmp)
 		return (syntax_error(0));

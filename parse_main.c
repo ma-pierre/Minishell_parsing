@@ -57,7 +57,7 @@ int	main(int ac, char **av)
 				free(line);
 				continue ;
 			}
-			if (find_pos_dollar(line) != (size_t)-1)
+			while (find_pos_dollar(line) != (size_t)-1)
 				line = split_env(line);
 			// if(find_heredoc(line))
 			//{
