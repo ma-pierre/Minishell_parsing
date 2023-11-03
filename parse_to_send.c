@@ -26,7 +26,7 @@ int find_next_pipe(char *str)
 	}
 	return (-1);
 }
-char **line_to_tab(char *line)
+/*char **line_to_tab(char *line)
 {
 	int		nbcmd;
 	char	**cmds;
@@ -53,7 +53,6 @@ char **line_to_tab(char *line)
 	cmds[i + 1] = NULL;
 	return (cmds);
 }
-//ATTENTION TRAVAILLER SUR LA LIGNE AVEC LES PIPES EN'' en -1;
 
 t_cmds *tab_to_struct(char **cmds)
 {
@@ -77,6 +76,27 @@ t_cmds *tab_to_struct(char **cmds)
 	free(cmds);
 	struct_cmds[i].cmd = NULL;
 	return (struct_cmds);
+}*/
+
+t_cmds *line_to_structs(char *line) 
+{
+    int nbcmd = find_nbcmd(line);
+    int start = 0, end = 0, i = 0;
+
+    t_cmds *struct_cmds = malloc(sizeof(t_cmds) * (nbcmd + 1));
+    if (!struct_cmds)
+		return NULL;
+    while ((end = find_next_pipe(line + start)) != -1)
+	{
+        struct_cmds[i].cmd = ft_strndup(line + start, end);
+		if(!struct_cmds[i].cmd)
+			//gerer l'erreur
+			return (NULL);
+        start += end + 1;
+        i++;
+    }
+    struct_cmds[i].cmd = ft_strdup(line + start);
+    struct_cmds[i + 1].cmd = NULL;
+
+    return struct_cmds;
 }
-
-

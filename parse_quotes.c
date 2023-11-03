@@ -16,24 +16,22 @@ char *check_quotes(char *str)
 			j = 1;
 			c = str[i];
 			i++;
-			while (str[i])
+			while (str[i] && str[i] != c)
 			{
-				if (str[i] == c)
-				{
-					j = 0;
-					break ;
-				}
-				else if (c == '\'')
+				if (c == '\'')
                     str[i] *= -1;
                 i++;
 			}
+			if (str[i] == c)
+				j = 0;
+			else
+			{
+				free(str);
+				return(NULL);
+			}
 		}
-        i++;
-	}
-	if (j == 1)
-	{
-		free(str);
-		return (NULL);
+		if (str[i] != '\0')
+			i++;
 	}
 	return (str);
 }

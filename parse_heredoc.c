@@ -70,5 +70,6 @@ static char *do_heredoc(char *line)
 	if (!delimit)
 		return (line);
 	
+	
 
 }

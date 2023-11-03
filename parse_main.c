@@ -11,75 +11,92 @@ void	ft_exit(void)
 	write(1, "\nExit\n", 6);
 	exit(0);
 }
+char	*ft_parsing(char *start_line)
+{
+    char *line;
 
+    line = ft_strdup(start_line);
+    if (!line)
+	{
+        ft_exit();
+        return (NULL);
+    }
+    if (*line)
+        add_history(line);
+    line = check_quotes(line);
+    if (!line)
+	{
+        printf("quote error\n");
+        return (NULL);
+    }
+    printf("AFTER QUOTES =%s\n", line);
+    if (!syntax_parse(line))
+	{
+        free(line);
+        return (NULL);
+    }
+    if (find_pos_dollar(line) != -1)
+        line = split_env(line);
+    line = ft_positive(line);
+    return (line);
+}
+int	free_struct(t_cmds *data_struct)
+{
+	int	i;
+
+	i = 0;
+	if (data_struct == NULL)
+		return (0);
+	while (data_struct[i].cmd != NULL)
+	{
+		free(data_struct[i].cmd);
+		i++;
+	}
+	free(data_struct);
+	return (0);
+}
 int	main(int ac, char **av)
 {
 	struct sigaction	sa;
 	char				*line;
 	//char				*hdoc;
-	char				**cmds;
+	char				*start_line;
+	//char				**cmds;
 	t_cmds				*data_exec;
 	int					i;
 	(void)ac;
 	(void)av;
 	sa.sa_handler = handle_sigint;
+	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
-	// printf("%s\n", env[0]);
-	// printf("%s\n", env[1]);
-	// printf("%s\n", env[2]);
-	// printf("%s\n", env[3]);
 	//hdoc = NULL;
-	cmds = NULL;
+	//cmds = NULL;
 
 	while (1)
 	{
-		// printf(MAGENTA "Minishell> " RESET);
-		line = readline("Minishell> ");
-		if (!line)
-		{
+		start_line = readline("Minishell> ");
+		if (!start_line)
 			ft_exit();
+		line = ft_parsing(start_line);
+		free(start_line);
+		if (!line)
 			continue ;
-		}
-		if (line && *line)
-			add_history(line);
-		if (line)
+		data_exec = line_to_structs(line);
+		if (!data_exec)
 		{
-			line = check_quotes(line);
-			if (!line)
-			{
-				printf("quote error\n");
-				continue ;
-			}
-			printf("AFTER QUOTES = %s \n", line);
-			if (!syntax_parse(line))
-			{
-				free(line);
-				continue ;
-			}
-			while (find_pos_dollar(line) != (size_t)-1)
-				line = split_env(line);
-			// if(find_heredoc(line))
-			//{
-			//	hdoc = find_multi_heredoc(line);
-			//}
-			line = ft_positive(line);
-			cmds = line_to_tab(line);
-			//ENVOYER A LA PLACE DE LINE  LA LIGNE aVEc -1 au lieu des pipes;
-			data_exec = tab_to_struct(cmds);
-			if (!data_exec)
-			{
-				free(line);
-				//GERER LERREUR
-				return (0);
-			}
-			i = 0;
-			while (data_exec[i].cmd)
-			{
-				printf("TAB %d ======= %s\n", i, data_exec[i].cmd);
-				i++;
-			}
+			free(line);
+			free_struct(data_exec);
+			break;//amodifier
 		}
+		i = 0;
+		while (data_exec[i].cmd)
+		{
+			printf("FINAL TEST STRUCTURE ..... TAB [%d] = [%s]\n", i, data_exec[i].cmd);
+			i++;
+		}
+		free_struct(data_exec);
 		free(line);
 	}
 }
+
