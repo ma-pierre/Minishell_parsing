@@ -1,37 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_quotes.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mapierre <mapierre@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/03 19:28:08 by mapierre          #+#    #+#             */
+/*   Updated: 2023/11/03 19:28:09 by mapierre         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell_parse.h"
 
-char *check_quotes(char *str)
+char	*check_quotes(char *str)
 {
-	int	i;
-	int	j;
-	char c;
+	int		i;
+	char	c;
 
 	i = 0;
-	j = 0;
-
 	while (str[i])
 	{
 		if (str[i] == '"' || str[i] == '\'')
 		{
-			j = 1;
-			c = str[i];
-			i++;
+			c = str[i++];
 			while (str[i] && str[i] != c)
 			{
 				if (c == '\'')
-                    str[i] *= -1;
-                i++;
+					str[i] *= -1;
+				i++;
 			}
-			if (str[i] == c)
-				j = 0;
-			else
-			{
-				free(str);
-				return(NULL);
-			}
+			if (!str[i])
+				return (free(str), NULL);
 		}
-		if (str[i] != '\0')
-			i++;
+		i++;
 	}
 	return (str);
 }

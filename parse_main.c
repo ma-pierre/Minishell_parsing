@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_main.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mapierre <mapierre@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/03 19:28:23 by mapierre          #+#    #+#             */
+/*   Updated: 2023/11/03 19:39:46 by mapierre         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell_parse.h"
 
 void	handle_sigint(int sig)
@@ -13,32 +25,31 @@ void	ft_exit(void)
 }
 char	*ft_parsing(char *start_line)
 {
-    char *line;
+	char	*line;
 
-    line = ft_strdup(start_line);
-    if (!line)
+	line = ft_strdup(start_line);
+	if (!line)
 	{
-        ft_exit();
-        return (NULL);
-    }
-    if (*line)
-        add_history(line);
-    line = check_quotes(line);
-    if (!line)
+		ft_exit();
+		return (NULL);
+	}
+	if (*line)
+		add_history(line);
+	line = check_quotes(line);
+	if (!line)
 	{
-        printf("quote error\n");
-        return (NULL);
-    }
-    printf("AFTER QUOTES =%s\n", line);
-    if (!syntax_parse(line))
+		printf("quote error\n");
+		return (NULL);
+	}
+	if (!syntax_parse(line))
 	{
-        free(line);
-        return (NULL);
-    }
-    if (find_pos_dollar(line) != -1)
-        line = split_env(line);
-    line = ft_positive(line);
-    return (line);
+		free(line);
+		return (NULL);
+	}
+	if (find_pos_dollar(line) != -1)
+		line = expand_all(line);
+	line = ft_positive(line);
+	return (line);
 }
 int	free_struct(t_cmds *data_struct)
 {
@@ -59,20 +70,20 @@ int	main(int ac, char **av)
 {
 	struct sigaction	sa;
 	char				*line;
-	//char				*hdoc;
 	char				*start_line;
-	//char				**cmds;
 	t_cmds				*data_exec;
 	int					i;
+
+	// char				*hdoc;
+	// char				**cmds;
 	(void)ac;
 	(void)av;
 	sa.sa_handler = handle_sigint;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
-	//hdoc = NULL;
-	//cmds = NULL;
-
+	// hdoc = NULL;
+	// cmds = NULL;
 	while (1)
 	{
 		start_line = readline("Minishell> ");
@@ -87,16 +98,16 @@ int	main(int ac, char **av)
 		{
 			free(line);
 			free_struct(data_exec);
-			break;//amodifier
+			break ; // amodifier
 		}
 		i = 0;
 		while (data_exec[i].cmd)
 		{
-			printf("FINAL TEST STRUCTURE ..... TAB [%d] = [%s]\n", i, data_exec[i].cmd);
+			printf("FINAL TEST STRUCTURE ..... TAB [%d] = [%s]\n", i,
+				data_exec[i].cmd);
 			i++;
 		}
 		free_struct(data_exec);
 		free(line);
 	}
 }
-
