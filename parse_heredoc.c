@@ -6,7 +6,7 @@
 /*   By: mapierre <mapierre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 19:28:32 by mapierre          #+#    #+#             */
-/*   Updated: 2023/11/03 19:28:33 by mapierre         ###   ########.fr       */
+/*   Updated: 2023/11/05 20:35:11 by mapierre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,12 @@ char	*find_multi_heredoc(char *line)
 	tmp = NULL;
 	while (count--)
 	{
-		tmp = save;
-		save = do_heredoc(save);
-		if (tmp != line && count != -1)
-			free(tmp);
+		tmp = do_heredoc(save);
+		if (save != line)
+			free(save);
+		save = tmp;
+		if (!save)
+			return (NULL);
 	}
 	return (save);
 }
@@ -57,13 +59,37 @@ char	*path_file(void)
 	static int	i;
 
 	count = ft_itoa(i++);
-	file_path = build_expended_line("/tmp/file", count, "");
+	file_path = build_expanded_line("/tmp/file", count, "");
 	if (count)
 		free(count);
 	return (file_path);
 }
+void	inside_heredoc(char *limiter, char *file)
+{
+	char		*line;
+	int			fd;
 
-static char	*do_heredoc(char *line)
+	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	if (fd == -1)
+		return (free(file), perror("open"), exit(1));
+	while (1)
+	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, &here_sig);
+		line = readline("heredoc>");
+		if (!line)
+			printf("minishell: warning: end-of-file (wanted `eof')\n");
+		if (!line || !ft_strcmp(line, limiter))
+			break ;
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+	}
+	free_strs(line, file, limiter);
+	close(fd);
+	exit(0);
+}
+char	*do_heredoc(char *line)
 {
 	char *pos;
 	char *delimit;
@@ -78,7 +104,12 @@ static char	*do_heredoc(char *line)
 	signal(SIGINT, &is_inside_sig);
 	if (!pos)
 		return (line);
-	delimit = find_delimiter(pos);
+	delimit = find_delimit(pos);
 	if (!delimit)
 		return (line);
+	ft_exec_heredoc(delimit, file);
+	new = delimit_to_path(line, delimit, file);
+	free_strs(file, delimit, NULL);
+	return (new);
 }
+

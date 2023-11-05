@@ -6,7 +6,7 @@
 /*   By: mapierre <mapierre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 19:28:14 by mapierre          #+#    #+#             */
-/*   Updated: 2023/11/03 21:45:26 by mapierre         ###   ########.fr       */
+/*   Updated: 2023/11/05 17:30:31 by mapierre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,45 +40,6 @@ int	find_next_pipe(char *str)
 	}
 	return (-1);
 }
-/*char *skip_non_printable(char *str, int *j, char *cleaned)
-{
-    while (*str < 0)
-	{
-        cleaned[(*j)++] = ft_positive(*str);
-        str++;
-    }
-    return (str);
-}*/
-
-/*char *clean_cmd(char *cmd)
-{
-    int	i;
-	int	j;
-    char *cleaned;
-	
-	i = 0;
-	j = 0;
-	cleaned = malloc(ft_strlen(cmd) + 1);
-    if (!cleaned)
-        return NULL;
-    while (cmd[i] != '\0')
-	{
-        if (cmd[i] < 0)
-            cleaned[j++] = -cmd[i];
-		else
-		{
-            if (cmd[i] != ' ' && cmd[i] != '\t')
-                cleaned[j++] = cmd[i];
-        	else if (j > 0 && cleaned[j - 1] != ' ')
-                cleaned[j++] = ' ';
-        }
-		i++;
-    }
-	if (j > 0 && cleaned[j - 1] == ' ')
-        j--;
-    cleaned[j] = '\0';
-    return (cleaned);
-}*/
 
 t_cmds	*line_to_structs(char *line)
 {
@@ -87,6 +48,8 @@ t_cmds	*line_to_structs(char *line)
 	int		end;
 	int		i;
 	t_cmds	*struct_cmds;
+	char	*cleaned_split;
+	char	*split;
 	
 	nbcmd = find_nbcmd(line);
 	start = 0;
@@ -96,7 +59,54 @@ t_cmds	*line_to_structs(char *line)
 	if (!struct_cmds)
 		return (NULL);
 	while ((end = find_next_pipe(line + start)) != -1)
-	{
+    {
+        split = ft_strndup(line + start, end);
+        if (!split)
+        {
+            // Gérer l'erreur.
+            // Libérer la mémoire allouée jusqu'à présent avant de retourner NULL.
+            while (i > 0) free(struct_cmds[--i].cmd);
+            	free(struct_cmds);
+            return (NULL);
+        }
+        cleaned_split = rmv_spaces_quotes(split);
+        	free(split);
+        if (!cleaned_split)
+        {
+            // Gérer l'erreur.
+            // Libérer la mémoire allouée jusqu'à présent avant de retourner NULL.
+            while (i > 0) free(struct_cmds[--i].cmd);
+            	free(struct_cmds);
+            return NULL;
+        }
+        struct_cmds[i].cmd = cleaned_split; 
+        start += end + 1;
+        i++;
+    }
+    split = ft_strdup(line + start);
+    if (!split)
+    {
+        // Gérer l'erreur.
+        // Libérer la mémoire allouée jusqu'à présent avant de retourner NULL.
+        while (i > 0) free(struct_cmds[--i].cmd);
+        	free(struct_cmds);
+        return NULL;
+    }
+    cleaned_split = rmv_spaces_quotes(split);
+    	free(split);
+    if (!cleaned_split)
+    {
+        // Gérer l'erreur.
+        while (i > 0) free(struct_cmds[--i].cmd);
+        	free(struct_cmds);
+        return NULL;
+    }
+    struct_cmds[i].cmd = cleaned_split; 
+    struct_cmds[i + 1].cmd = NULL;
+
+    return (struct_cmds);
+}
+/*
 		struct_cmds[i].cmd = ft_strndup(line + start, end);
 		if (!struct_cmds[i].cmd)
 			// gerer l'erreur
@@ -107,4 +117,5 @@ t_cmds	*line_to_structs(char *line)
 	struct_cmds[i].cmd = ft_strdup(line + start);
 	struct_cmds[i + 1].cmd = NULL;
 	return (struct_cmds);
-}
+}*/
+

@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <sys/wait.h>
 
 #define MAGENTA "\033[95m"
 #define RESET "\033[0m"
@@ -54,3 +56,24 @@ char				*ft_positive(char *str);
 int					free_struct(t_cmds *data_struct);
 char				*dollar_qm(void);
 char				*expand_all(char *str);
+char	*build_expanded_line(char *before, char *value, char *after);
+char	*rmv_spaces_quotes(char *line);
+char	*negative_doublequotes(char *line);
+void	here_sig(int sig);
+void	is_inside_sig(int sig);
+char	*ft_strnstr(const char *big, const char *little, size_t len);
+char	*delimit_to_path(char *line, char *limiter, char *filename);
+char	*free_strs(char *str1, char *str2, char *str3);
+char	*path_file(void);
+char	*has_heredoc(char *line);
+char	*find_multi_heredoc(char *line);
+char	*find_heredoc(char *line);
+char	*do_heredoc(char *line);
+char	*find_delimit(char *line);
+void	 ft_exec_heredoc(char *limiter, char *file);
+void	inside_heredoc(char *limiter, char *file);
+char	*ft_parsing(char *start_line);
+unsigned int	count_malloc(int n);
+char	*ft_itoa(int n);
+int	ft_strcmp(char *s1, char *s2);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);

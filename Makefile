@@ -6,15 +6,19 @@ SRCS = parse_main.c \
 		parse_utils.c\
 		parse_expand.c\
 		parse_to_send.c\
+		parse_heredoc.c\
+		parse_heredoc_utils.c\
+		lib_utils.c\
 		
 OBJS = $(SRCS:.c=.o)
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -fPIE
+LDFLAGS = -pie
 LIBS = -lreadline
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	gcc $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
+	gcc $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS) $(LDFLAGS)
 
 clean:
 	rm -f $(OBJS)
