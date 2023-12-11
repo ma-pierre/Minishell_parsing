@@ -110,7 +110,7 @@ int	main(int ac, char **av)
 		while (data_exec[i].cmd)
 		{
 			data_exec[i].cmd = ft_positive(data_exec[i].cmd);
-			printf("FINAL TEST STRUCTURE ..... TAB [%d] = [%s]\n", i,
+			//printf("FINAL TEST STRUCTURE ..... TAB [%d] = [%s]\n", i,
 				data_exec[i].cmd);
 			i++;
 		}

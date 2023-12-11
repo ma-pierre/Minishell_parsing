@@ -11,14 +11,13 @@ SRCS = parse_main.c \
 		lib_utils.c\
 		
 OBJS = $(SRCS:.c=.o)
-CFLAGS = -Wall -Wextra -Werror -g -fPIE
-LDFLAGS = -pie
+CFLAGS = -Wall -Wextra -Werror -g
 LIBS = -lreadline
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	gcc $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS) $(LDFLAGS)
+	gcc $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 clean:
 	rm -f $(OBJS)
